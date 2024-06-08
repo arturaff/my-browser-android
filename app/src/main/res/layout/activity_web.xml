@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".WebActivity">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_marginTop="4dp"
+        android:layout_height="wrap_content">
+
+        <ImageButton
+            android:id="@+id/button_main"
+            android:layout_width="42dp"
+            android:layout_height="42dp"
+            android:layout_marginStart="8dp"
+            android:backgroundTint="@android:color/transparent"
+            android:importantForAccessibility="no"
+            android:src="@drawable/ic_main"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:tint="@color/main2" />
+
+        <TextView
+            android:id="@+id/text_query"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:maxLength="30"
+            android:layout_marginHorizontal="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/button_add_bookmark"
+            app:layout_constraintStart_toEndOf="@+id/button_main"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageButton
+            android:id="@+id/button_add_bookmark"
+            android:layout_width="42dp"
+            android:layout_height="42dp"
+            android:layout_marginEnd="8dp"
+            android:backgroundTint="@android:color/transparent"
+            android:importantForAccessibility="no"
+            android:src="@drawable/ic_star"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/button_more"
+            app:layout_constraintTop_toTopOf="parent"
+            app:tint="@color/main2" />
+
+        <ImageButton
+            android:id="@+id/button_more"
+            android:layout_width="42dp"
+            android:layout_height="42dp"
+            android:layout_marginEnd="8dp"
+            android:backgroundTint="@android:color/transparent"
+            android:importantForAccessibility="no"
+            android:src="@drawable/ic_reload"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0"
+            app:tint="@color/main2" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="50dp"
+        android:orientation="vertical">
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="match_parent"
+            android:layout_height="4dp"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            tools:ignore="UselessParent">
+
+            <WebView
+                android:id="@+id/web_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</FrameLayout>

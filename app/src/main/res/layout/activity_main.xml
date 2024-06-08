@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".MainActivity">
+
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/fragment_main"
+        android:name="ru.arturprgr.mybrowser.ui.main.MainFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="55dp" />
+
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/fragment_bookmarks"
+        android:name="ru.arturprgr.mybrowser.ui.bookmarks.BookmarksFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="55dp"
+        android:visibility="gone" />
+
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/fragment_history"
+        android:name="ru.arturprgr.mybrowser.ui.history.HistoryFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="55dp"
+        android:visibility="gone" />
+
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/fragment_downloads"
+        android:name="ru.arturprgr.mybrowser.ui.downloads.DownloadsFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="55dp"
+        android:visibility="gone" />
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/select_fragment"
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:layout_gravity="bottom"
+        app:menu="@menu/fragments_menu" />
+
+</FrameLayout>

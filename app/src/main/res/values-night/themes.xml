@@ -1,0 +1,11 @@
+<resources>
+    <!-- Base application theme. -->
+    <style name="Base.Theme.МойБраузер" parent="Theme.Material3.DayNight.NoActionBar">
+        <!-- Customize your dark theme here. -->
+        <!-- <item name="colorPrimary">@color/my_dark_primary</item> -->
+
+        <item name="colorPrimary">@color/main1</item>
+        <item name="android:textStyle">bold</item>
+        <item name="fontFamily">@font/inter_bold</item>
+    </style>
+</resources>
