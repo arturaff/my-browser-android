@@ -5,18 +5,18 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".MainActivity">
+    tools:context=".ui.activities.MainActivity">
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/fragment_main"
-        android:name="ru.arturprgr.mybrowser.ui.main.MainFragment"
+        android:name="ru.arturprgr.mybrowser.ui.fragments.MainFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginBottom="55dp" />
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/fragment_bookmarks"
-        android:name="ru.arturprgr.mybrowser.ui.bookmarks.BookmarksFragment"
+        android:name="ru.arturprgr.mybrowser.ui.fragments.BookmarksFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginBottom="55dp"
@@ -24,7 +24,7 @@
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/fragment_history"
-        android:name="ru.arturprgr.mybrowser.ui.history.HistoryFragment"
+        android:name="ru.arturprgr.mybrowser.ui.fragments.HistoryFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginBottom="55dp"
@@ -32,7 +32,7 @@
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/fragment_downloads"
-        android:name="ru.arturprgr.mybrowser.ui.downloads.DownloadsFragment"
+        android:name="ru.arturprgr.mybrowser.ui.fragments.DownloadsFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginBottom="55dp"

@@ -10,6 +10,8 @@
     <string name="register">Зарегистрироваться</string>
     <string name="I_have_an_account">У меня есть аккаунт</string>
     <string name="name">Имя</string>
+    <string name="today">Сегодня</string>
+    <string name="tomorrow">Завтра</string>
     <string name="sign_in">Войдите в аккаунт</string>
     <string name="reg">Зарегистрируйтесь</string>
     <string name="no_account">Нет аккаунта</string>
@@ -38,6 +40,7 @@
     <string name="edit_loc">Место жительства (город, село)</string>
     <string name="day_news">Новости дня</string>
     <string name="news">Новости</string>
+    <string name="weahter">Погода</string>
     <string-array name="search_system">
         <item>Google</item>
         <item>Яндекс</item>
