@@ -9,7 +9,7 @@ import com.google.firebase.database.database
 class Database(val path: String) {
     private val reference = Firebase.database.getReference(path)
 
-    fun setValue(value: Any) = Firebase.database.getReference(path).setValue(value)
+    fun setValue(value: Any) = reference.setValue(value)
 
     fun getValue(onGet: (value: String) -> Unit) =
         reference.addValueEventListener(object : ValueEventListener {
