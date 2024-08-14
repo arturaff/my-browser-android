@@ -19,4 +19,9 @@
         android:id="@+id/downloads_item"
         android:icon="@drawable/ic_download"
         android:title="" />
+
+    <item
+        android:id="@+id/collections_item"
+        android:icon="@drawable/ic_collections"
+        android:title="" />
 </menu>

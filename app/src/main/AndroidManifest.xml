@@ -21,19 +21,20 @@
         android:theme="@style/Theme.МойБраузер"
         tools:targetApi="31">
         <activity
-            android:name=".ui.activities.WeatherActivity"
+            android:name=".ui.activity.WeatherActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.activities.SettingsActivity"
+            android:name=".ui.activity.SettingsActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.activities.WebActivity"
+            android:name=".ui.activity.WebActivity"
+            android:configChanges="orientation|screenSize"
             android:exported="false" />
         <activity
-            android:name=".ui.activities.AuthActivity"
+            android:name=".ui.activity.AuthActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.activities.MainActivity"
+            android:name=".ui.activity.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

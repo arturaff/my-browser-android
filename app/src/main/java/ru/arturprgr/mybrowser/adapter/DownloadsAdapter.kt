@@ -6,29 +6,25 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.google.firebase.Firebase
-import com.google.firebase.database.database
-import ru.arturprgr.mybrowser.classes.Preferences
 import ru.arturprgr.mybrowser.R
-import ru.arturprgr.mybrowser.classes.Database
+import ru.arturprgr.mybrowser.data.FirebaseHelper
+import ru.arturprgr.mybrowser.data.Preferences
 import ru.arturprgr.mybrowser.databinding.LayoutLinkBinding
-import ru.arturprgr.mybrowser.model.Download
-
+import ru.arturprgr.mybrowser.model.Card
 
 class DownloadsAdapter : RecyclerView.Adapter<DownloadsAdapter.ViewHolder>() {
-    private val adapter = arrayListOf<Download>()
+    private val adapter = arrayListOf<Card>()
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        fun bind(download: Download) = with(LayoutLinkBinding.bind(itemView)) {
-            textName.text = download.name
-            textLink.text = download.path
-
+        fun bind(card: Card) = with(LayoutLinkBinding.bind(itemView)) {
+            textName.text = card.name
+            textLink.text = card.path
             buttonDelete.setOnClickListener {
-                AlertDialog.Builder(download.context)
+                AlertDialog.Builder(card.context)
                     .setTitle("Удаление файла")
                     .setMessage("Вы точно хотите удалить этот файл из истории (не с устройства)")
                     .setPositiveButton("Да") { _: DialogInterface, _: Int ->
-                        Database("${Preferences(download.context).getAccount()}/downloads/${download.index}/usage")
+                        FirebaseHelper("${Preferences(card.context).getAccount()}/downloads/${card.index}/usage")
                             .setValue(false)
                     }
                     .create()
@@ -38,19 +34,16 @@ class DownloadsAdapter : RecyclerView.Adapter<DownloadsAdapter.ViewHolder>() {
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder =
-        ViewHolder(
-            LayoutInflater.from(parent.context).inflate(
-                R.layout.layout_link, parent, false
-            )
-        )
+        ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.layout_link, parent, false))
 
     override fun getItemCount(): Int = adapter.size
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) = holder.bind(adapter[position])
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) =
+        holder.bind(adapter[position])
 
-    fun addDownload(download: Download) {
-        adapter.add(download)
-        notifyItemChanged(download.index)
-        notifyItemRangeChanged(download.index, adapter.size)
+    fun addDownload(card: Card) {
+        adapter.add(card)
+        notifyItemChanged(card.index)
+        notifyItemRangeChanged(card.index, adapter.size)
     }
 }
