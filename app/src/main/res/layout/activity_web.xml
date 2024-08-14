@@ -19,11 +19,10 @@
             android:layout_marginStart="4dp"
             android:backgroundTint="@android:color/transparent"
             android:importantForAccessibility="no"
-            android:src="@drawable/ic_main"
+            android:src="@drawable/ic_home"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:tint="@color/main2" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/text_query"
@@ -49,8 +48,7 @@
             android:src="@drawable/ic_add_in_collection"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/button_add_bookmark"
-            app:layout_constraintTop_toTopOf="parent"
-            app:tint="@color/main2" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <ImageButton
             android:id="@+id/button_add_bookmark"
@@ -62,8 +60,7 @@
             android:src="@drawable/ic_star"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/button_reload"
-            app:layout_constraintTop_toTopOf="parent"
-            app:tint="@color/main2" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <ImageButton
             android:id="@+id/button_reload"
@@ -75,8 +72,7 @@
             android:src="@drawable/ic_reload"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:tint="@color/main2" />
+            app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -89,7 +85,7 @@
             android:id="@+id/progressBar"
             style="?android:attr/progressBarStyleHorizontal"
             android:layout_width="match_parent"
-            android:layout_height="4dp"
+            android:layout_height="2dp"
             app:layout_constraintBottom_toBottomOf="parent" />
 
         <LinearLayout
