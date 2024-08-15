@@ -14,14 +14,16 @@
         android:text="@string/history"
         android:textSize="22sp" />
 
-    <FrameLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/list_history"
+            android:layout_weight="1"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="0dp" />
 
         <Button
             android:id="@+id/button_clear_history"
@@ -32,6 +34,6 @@
             android:text="@string/clear_history"
             android:textColor="@color/white" />
 
-    </FrameLayout>
+    </LinearLayout>
 
 </LinearLayout>

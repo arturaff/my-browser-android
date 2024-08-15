@@ -137,6 +137,4 @@ class MainFragment : Fragment() {
         )
         binding.editQuery.setText("")
     }
-
-
 }
