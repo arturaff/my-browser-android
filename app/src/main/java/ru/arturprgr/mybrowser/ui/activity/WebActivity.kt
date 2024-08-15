@@ -8,7 +8,6 @@ import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.view.animation.Animation
 import android.widget.ArrayAdapter
 import android.widget.EditText
 import android.widget.FrameLayout
@@ -189,7 +188,15 @@ class WebActivity : AppCompatActivity() {
     )
     override fun onBackPressed() {
         val webView = binding.webView
-        if (webView.canGoBack()) webView.goBack() else super.onBackPressed()
+        if (webView.canGoBack()) webView.goBack() else {
+            super.onBackPressed()
+            startActivity(
+                Intent(
+                    this@WebActivity,
+                    MainActivity::class.java
+                )
+            )
+        }
     }
 
     private fun goMain() {
@@ -222,14 +229,14 @@ class WebActivity : AppCompatActivity() {
                     "${preferences.getAccount()}/collections/${spinnerCollections.selectedItemPosition + 1}"
                 val quantity = 1
                 preferences.setPreference("quantity$spinnerCollections", quantity)
+                FirebaseHelper("$reference/quantity")
+                    .setValue(quantity)
                 FirebaseHelper("$reference/$quantity/title")
                     .setValue(editName)
                 FirebaseHelper("$reference/$quantity/url")
                     .setValue("${webView.url}")
                 FirebaseHelper("$reference/$quantity/usage")
                     .setValue(true)
-                FirebaseHelper("$reference/quantity")
-                    .setValue(quantity)
             }
             .create()
             .show()
@@ -255,12 +262,12 @@ class WebActivity : AppCompatActivity() {
                 val url = webView.url.toString()
                 val reference =
                     "${preferences.getAccount()}/bookmarks/${preferences.getQuantityBookmarks()}"
-                FirebaseHelper("$reference/usage").setValue(true)
-                FirebaseHelper("$reference/name").setValue(name)
-                FirebaseHelper("$reference/url").setValue(url)
                 FirebaseHelper("${preferences.getAccount()}/bookmarks/quantity").setValue(
                     preferences.getQuantityBookmarks()
                 )
+                FirebaseHelper("$reference/usage").setValue(true)
+                FirebaseHelper("$reference/name").setValue(name)
+                FirebaseHelper("$reference/url").setValue(url)
             }
             .create()
             .show()

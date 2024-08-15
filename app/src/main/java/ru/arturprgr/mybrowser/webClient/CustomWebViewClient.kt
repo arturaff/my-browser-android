@@ -31,10 +31,10 @@ class CustomWebViewClient(val context: Context, val binding: ActivityWebBinding)
             val reference = "${preferences.getAccount()}/history"
             val title = view.title.toString()
             preferences.setQuantityHistory(preferences.getQuantityHistory() + 1)
+            FirebaseHelper("$reference/quantity").setValue(preferences.getQuantityHistory())
             FirebaseHelper("$reference/${preferences.getQuantityHistory()}/name").setValue(title)
             FirebaseHelper("$reference/${preferences.getQuantityHistory()}/url").setValue(url)
             FirebaseHelper("$reference/${preferences.getQuantityHistory()}/usage").setValue(true)
-            FirebaseHelper("$reference/quantity").setValue(preferences.getQuantityHistory())
         }
     }
 
