@@ -62,9 +62,9 @@
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="55dp"
+        android:layout_gravity="center"
         android:layout_marginHorizontal="32dp"
         android:layout_marginTop="100dp"
-        android:layout_gravity="center"
         app:cardBackgroundColor="#FFA000"
         app:cardCornerRadius="32dp">
 
@@ -76,6 +76,7 @@
                 android:id="@+id/spinner_system"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
+                android:layout_marginStart="4dp"
                 android:entries="@array/search_system"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -85,7 +86,9 @@
                 android:id="@+id/edit_query"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
                 android:hint="@string/https"
+                android:imeOptions="actionSearch"
                 android:importantForAutofill="no"
                 android:inputType="textWebEditText"
                 android:textColor="@color/white"

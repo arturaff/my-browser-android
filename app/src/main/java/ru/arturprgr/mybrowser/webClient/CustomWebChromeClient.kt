@@ -28,7 +28,8 @@ class CustomWebChromeClient(val binding: ActivityWebBinding) :
     }
 
     override fun onProgressChanged(view: WebView?, newProgress: Int) {
-        binding.textQuery.text = view!!.title
+        binding.textQueryTop.text = view!!.title
+        binding.textQueryBottom.text = view.title
         binding.progressBar.progress = newProgress
         if (binding.progressBar.progress == 100) binding.progressBar.visibility = View.GONE
         else binding.progressBar.visibility = View.VISIBLE

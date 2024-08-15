@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -8,12 +8,12 @@
     tools:context=".ui.activity.WebActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/tool_layout"
+        android:id="@+id/layout_tool_top"
         android:layout_width="match_parent"
         android:layout_height="50dp">
 
         <ImageButton
-            android:id="@+id/button_main"
+            android:id="@+id/button_main_top"
             android:layout_width="42dp"
             android:layout_height="42dp"
             android:layout_marginStart="4dp"
@@ -25,7 +25,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/text_query"
+            android:id="@+id/text_query_top"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="8dp"
@@ -33,13 +33,13 @@
             android:maxLines="1"
             android:textSize="12sp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/button_add_in_collection"
-            app:layout_constraintStart_toEndOf="@+id/button_main"
+            app:layout_constraintEnd_toStartOf="@+id/button_add_in_collection_top"
+            app:layout_constraintStart_toEndOf="@+id/button_main_top"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="0000000000000000000000000000000" />
 
         <ImageButton
-            android:id="@+id/button_add_in_collection"
+            android:id="@+id/button_add_in_collection_top"
             android:layout_width="42dp"
             android:layout_height="42dp"
             android:layout_marginEnd="4dp"
@@ -47,11 +47,11 @@
             android:importantForAccessibility="no"
             android:src="@drawable/ic_add_in_collection"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/button_add_bookmark"
+            app:layout_constraintEnd_toStartOf="@+id/button_add_bookmark_top"
             app:layout_constraintTop_toTopOf="parent" />
 
         <ImageButton
-            android:id="@+id/button_add_bookmark"
+            android:id="@+id/button_add_bookmark_top"
             android:layout_width="42dp"
             android:layout_height="42dp"
             android:layout_marginEnd="4dp"
@@ -59,11 +59,81 @@
             android:importantForAccessibility="no"
             android:src="@drawable/ic_star"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/button_reload"
+            app:layout_constraintEnd_toStartOf="@+id/button_reload_top"
             app:layout_constraintTop_toTopOf="parent" />
 
         <ImageButton
-            android:id="@+id/button_reload"
+            android:id="@+id/button_reload_top"
+            android:layout_width="42dp"
+            android:layout_height="42dp"
+            android:layout_marginEnd="4dp"
+            android:backgroundTint="@android:color/transparent"
+            android:importantForAccessibility="no"
+            android:src="@drawable/ic_reload"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layout_tool_bottom"
+        android:layout_width="match_parent"
+        android:layout_gravity="bottom"
+        android:layout_height="50dp">
+
+        <ImageButton
+            android:id="@+id/button_main_bottom"
+            android:layout_width="42dp"
+            android:layout_height="42dp"
+            android:layout_marginStart="4dp"
+            android:backgroundTint="@android:color/transparent"
+            android:importantForAccessibility="no"
+            android:src="@drawable/ic_home"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/text_query_bottom"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="8dp"
+            android:gravity="center"
+            android:maxLines="1"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/button_add_in_collection_bottom"
+            app:layout_constraintStart_toEndOf="@+id/button_main_bottom"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="0000000000000000000000000000000" />
+
+        <ImageButton
+            android:id="@+id/button_add_in_collection_bottom"
+            android:layout_width="42dp"
+            android:layout_height="42dp"
+            android:layout_marginEnd="4dp"
+            android:backgroundTint="@android:color/transparent"
+            android:importantForAccessibility="no"
+            android:src="@drawable/ic_add_in_collection"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/button_add_bookmark_bottom"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageButton
+            android:id="@+id/button_add_bookmark_bottom"
+            android:layout_width="42dp"
+            android:layout_height="42dp"
+            android:layout_marginEnd="4dp"
+            android:backgroundTint="@android:color/transparent"
+            android:importantForAccessibility="no"
+            android:src="@drawable/ic_star"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/button_reload_bottom"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageButton
+            android:id="@+id/button_reload_bottom"
             android:layout_width="42dp"
             android:layout_height="42dp"
             android:layout_marginEnd="4dp"
@@ -77,6 +147,7 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <LinearLayout
+        android:id="@+id/layout_web_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
@@ -89,7 +160,6 @@
             app:layout_constraintBottom_toBottomOf="parent" />
 
         <LinearLayout
-            android:id="@+id/layout_web_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
@@ -102,66 +172,6 @@
 
         </LinearLayout>
 
-        <LinearLayout
-            android:id="@+id/layout_error"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="48dp"
-            android:orientation="vertical"
-            android:visibility="gone">
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:visibility="visible"
-                tools:ignore="UseCompoundDrawables,UselessParent">
-
-                <ImageView
-                    android:id="@+id/icon"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:importantForAccessibility="no"
-                    tools:src="@drawable/ic_warning" />
-
-                <TextView
-                    android:id="@+id/text_title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginStart="8dp"
-                    android:textSize="16sp"
-                    tools:text="Пример текста" />
-
-            </LinearLayout>
-
-            <TextView
-                android:id="@+id/text_cause"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                tools:text="Пример текста" />
-
-            <Button
-                android:id="@+id/button_actions"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginTop="16dp"
-                android:textColor="@color/white"
-                tools:text="Пример текста" />
-
-            <Button
-                android:id="@+id/button_go_main"
-                style="?android:attr/buttonBarButtonStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="0dp"
-                android:layout_gravity="center"
-                android:text="@string/go_main" />
-
-        </LinearLayout>
-
         <FrameLayout
             android:id="@+id/fullscreen_container"
             android:layout_width="match_parent"
@@ -170,4 +180,65 @@
 
     </LinearLayout>
 
-</LinearLayout>
+    <LinearLayout
+        android:id="@+id/layout_error"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="100dp"
+        android:layout_marginHorizontal="50dp"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:visibility="visible"
+            tools:ignore="UseCompoundDrawables,UselessParent">
+
+            <ImageView
+                android:id="@+id/icon"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:importantForAccessibility="no"
+                tools:src="@drawable/ic_warning" />
+
+            <TextView
+                android:id="@+id/text_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginStart="8dp"
+                android:textSize="16sp"
+                tools:text="Пример текста" />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/text_cause"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            tools:text="Пример текста" />
+
+        <Button
+            android:id="@+id/button_actions"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="16dp"
+            android:textColor="@color/white"
+            tools:text="Пример текста" />
+
+        <Button
+            android:id="@+id/button_go_main"
+            style="?android:attr/buttonBarButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginStart="0dp"
+            android:text="@string/go_main" />
+
+    </LinearLayout>
+
+</FrameLayout>

@@ -21,10 +21,11 @@
         android:theme="@style/Theme.МойБраузер"
         tools:targetApi="31">
         <activity
-            android:name=".ui.activity.WeatherActivity"
-            android:exported="false" />
-        <activity
             android:name=".ui.activity.SettingsActivity"
+            android:exported="false"
+            android:label="@string/title_activity_settings" />
+        <activity
+            android:name=".ui.activity.WeatherActivity"
             android:exported="false" />
         <activity
             android:name=".ui.activity.WebActivity"

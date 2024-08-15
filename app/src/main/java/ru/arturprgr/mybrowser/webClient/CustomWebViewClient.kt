@@ -22,17 +22,20 @@ import ru.arturprgr.mybrowser.databinding.ActivityWebBinding
 class CustomWebViewClient(val context: Context, val binding: ActivityWebBinding) : WebViewClient() {
     val preferences = Preferences(context)
 
-    override fun onPageFinished(view: WebView?, url: String?) {
-        super.onPageFinished(view, url)
+    override fun onPageCommitVisible(view: WebView?, url: String?) {
+        super.onPageCommitVisible(view, url)
         Log.d("Attempt", url!!)
         view!!.visibility = View.VISIBLE
-        val reference = "${preferences.getAccount()}/history"
-        val title = view.title.toString()
-        preferences.setQuantityHistory(preferences.getQuantityHistory() + 1)
-        FirebaseHelper("$reference/${preferences.getQuantityHistory()}/name").setValue(title)
-        FirebaseHelper("$reference/${preferences.getQuantityHistory()}/url").setValue(url)
-        FirebaseHelper("$reference/${preferences.getQuantityHistory()}/usage").setValue(true)
-        FirebaseHelper("$reference/quantity").setValue(preferences.getQuantityHistory())
+        Log.d("Attempt", "canGoBack - ${view.canGoBack()}, canGoForward - ${view.canGoForward()}")
+        if ((!view.canGoBack() || !view.canGoForward()) && (view.canGoBack() || !view.canGoForward())) {
+            val reference = "${preferences.getAccount()}/history"
+            val title = view.title.toString()
+            preferences.setQuantityHistory(preferences.getQuantityHistory() + 1)
+            FirebaseHelper("$reference/${preferences.getQuantityHistory()}/name").setValue(title)
+            FirebaseHelper("$reference/${preferences.getQuantityHistory()}/url").setValue(url)
+            FirebaseHelper("$reference/${preferences.getQuantityHistory()}/usage").setValue(true)
+            FirebaseHelper("$reference/quantity").setValue(preferences.getQuantityHistory())
+        }
     }
 
 
@@ -46,6 +49,7 @@ class CustomWebViewClient(val context: Context, val binding: ActivityWebBinding)
 
         try {
             val cm = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+            @Suppress("DEPRECATION")
             cm.activeNetworkInfo!!.isConnected
         } catch (_: NullPointerException) {
             viewErrorPage(

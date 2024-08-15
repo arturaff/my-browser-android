@@ -18,6 +18,7 @@ import ru.arturprgr.mybrowser.makeMessage
 
 class EntranceFragment : Fragment() {
     private lateinit var binding: FragmentEntranceBinding
+    private lateinit var preferences: Preferences
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -25,8 +26,7 @@ class EntranceFragment : Fragment() {
         savedInstanceState: Bundle?,
     ): View {
         binding = FragmentEntranceBinding.inflate(inflater, container, false)
-
-        val preferences = Preferences(requireContext())
+        preferences = Preferences(requireContext())
 
         binding.apply {
             buttonEntrance.setOnClickListener {
@@ -49,10 +49,8 @@ class EntranceFragment : Fragment() {
                                         FirebaseHelper("$account/downloads/quantity").getValue { downloadsQuantity ->
                                             preferences.setQuantityDownloads(downloadsQuantity.toInt())
                                             FirebaseHelper("$account/collections/quantity").getValue { collectionsQuantity ->
-                                                preferences.setQuantityCollections(
-                                                    collectionsQuantity.toInt()
-                                                )
-                                                requireContext().startActivity(
+                                                preferences.setQuantityCollections(collectionsQuantity.toInt())
+                                                startActivity(
                                                     Intent(
                                                         requireContext(),
                                                         MainActivity::class.java
@@ -68,7 +66,6 @@ class EntranceFragment : Fragment() {
                         .addOnFailureListener {
                             makeMessage(requireContext(), "Что-то пошло не так!")
                         }
-
                 } else makeMessage(requireContext(), "Заполните все поля!")
             }
 

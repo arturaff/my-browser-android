@@ -1,0 +1,35 @@
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <PreferenceCategory app:title="@string/search">
+
+        <ListPreference
+            app:entries="@array/search_system"
+            app:entryValues="@array/search_system_values"
+            app:key="def_search_system"
+            app:title="@string/def_search_system"
+            app:useSimpleSummaryProvider="true" />
+
+        <SwitchPreference
+            app:key="bottom_panel_tools"
+            app:title="Панель инструментов снизу" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory app:title="@string/weather">
+
+        <SwitchPreference
+            app:key="disabled_weather"
+            app:title="@string/disabled_weather" />
+
+        <SwitchPreference
+            app:key="auto_location"
+            app:title="Не определять местоположение автоматически" />
+
+        <EditTextPreference
+            app:key="def_location"
+            app:title="@string/def_location"
+            app:useSimpleSummaryProvider="true" />
+
+    </PreferenceCategory>
+
+</PreferenceScreen>
