@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/view"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.fragment.auth.EntranceFragment">
@@ -63,19 +64,19 @@
 
         <Button
             android:id="@+id/button_entrance"
-            android:textColor="@color/white"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:text="@string/entrance" />
+            android:text="@string/entrance"
+            android:textColor="@color/white" />
 
         <Button
             android:id="@+id/button_register"
+            style="?android:attr/buttonBarButtonStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:text="@string/no_account"
-            style="?android:attr/buttonBarButtonStyle" />
+            android:text="@string/no_account" />
 
     </LinearLayout>
 

@@ -1,8 +1,12 @@
 package ru.arturprgr.mybrowser
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.widget.Toast
 
+var weather: ArrayList<String> = arrayListOf()
+
+@SuppressLint("ResourceAsColor")
 fun makeMessage(context: Context, text: String) =
     Toast.makeText(context, text, Toast.LENGTH_LONG).show()
 

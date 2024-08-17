@@ -123,7 +123,6 @@ class WebActivity : AppCompatActivity() {
             webView.setWebViewClient(webViewClient)
             webView.setWebChromeClient(webChromeClient)
             webView.loadUrl(intent!!.getStringExtra("url").toString())
-
             webView.setDownloadListener { url, _, _, _, _ ->
                 val spinnerDir = Spinner(this@WebActivity)
                 spinnerDir.adapter = dirsAdapter
