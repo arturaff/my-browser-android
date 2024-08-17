@@ -1,4 +1,4 @@
-package ru.arturprgr.mybrowser.ui.fragments
+package ru.arturprgr.mybrowser.ui.fragment.auth
 
 import android.content.Intent
 import android.os.Bundle
@@ -10,14 +10,15 @@ import androidx.navigation.fragment.findNavController
 import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
 import ru.arturprgr.mybrowser.R
-import ru.arturprgr.mybrowser.classes.Database
-import ru.arturprgr.mybrowser.classes.Preferences
+import ru.arturprgr.mybrowser.data.FirebaseHelper
+import ru.arturprgr.mybrowser.data.Preferences
 import ru.arturprgr.mybrowser.databinding.FragmentEntranceBinding
-import ru.arturprgr.mybrowser.ui.activities.MainActivity
-import ru.arturprgr.mybrowser.viewToast
+import ru.arturprgr.mybrowser.ui.activity.MainActivity
+import ru.arturprgr.mybrowser.makeMessage
 
 class EntranceFragment : Fragment() {
     private lateinit var binding: FragmentEntranceBinding
+    private lateinit var preferences: Preferences
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -25,8 +26,7 @@ class EntranceFragment : Fragment() {
         savedInstanceState: Bundle?,
     ): View {
         binding = FragmentEntranceBinding.inflate(inflater, container, false)
-
-        val preferences = Preferences(requireContext())
+        preferences = Preferences(requireContext())
 
         binding.apply {
             buttonEntrance.setOnClickListener {
@@ -37,20 +37,26 @@ class EntranceFragment : Fragment() {
                     Firebase.auth.signInWithEmailAndPassword(email, password)
                         .addOnSuccessListener {
                             val editedMail = email.replace(".", "")
-                            Database("$editedMail/name").getValue { name ->
+                            FirebaseHelper("$editedMail/name").getValue { name ->
+                                val account = "${editedMail}/browser"
                                 preferences.setEmail(email)
                                 preferences.setName(name)
-                                preferences.setAccount("${editedMail}/browser")
-                                val reference = preferences.getAccount()
-                                Database("$reference/bookmarks/quantity").getValue { bookmarksQuantity ->
+                                preferences.setAccount(account)
+                                FirebaseHelper("$account/bookmarks/quantity").getValue { bookmarksQuantity ->
                                     preferences.setQuantityBookmarks(bookmarksQuantity.toInt())
-                                    Database("$reference/history/quantity").getValue { historyQuantity ->
+                                    FirebaseHelper("$account/history/quantity").getValue { historyQuantity ->
                                         preferences.setQuantityHistory(historyQuantity.toInt())
-                                        Database("$reference/downloads/quantity").getValue { downloadsQuantity ->
+                                        FirebaseHelper("$account/downloads/quantity").getValue { downloadsQuantity ->
                                             preferences.setQuantityDownloads(downloadsQuantity.toInt())
-                                            requireContext().startActivity(
-                                                Intent(requireContext(), MainActivity::class.java)
-                                            )
+                                            FirebaseHelper("$account/collections/quantity").getValue { collectionsQuantity ->
+                                                preferences.setQuantityCollections(collectionsQuantity.toInt())
+                                                startActivity(
+                                                    Intent(
+                                                        requireContext(),
+                                                        MainActivity::class.java
+                                                    )
+                                                )
+                                            }
                                         }
                                     }
                                 }
@@ -58,10 +64,9 @@ class EntranceFragment : Fragment() {
                         }
 
                         .addOnFailureListener {
-                            viewToast(requireContext(), "Что-то пошло не так!")
+                            makeMessage(requireContext(), "Что-то пошло не так!")
                         }
-
-                } else viewToast(requireContext(), "Заполните все поля!")
+                } else makeMessage(requireContext(), "Заполните все поля!")
             }
 
             buttonRegister.setOnClickListener {

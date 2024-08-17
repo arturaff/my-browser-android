@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".ui.fragments.MainFragment">
+    tools:context=".ui.fragment.main.MainFragment">
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -62,20 +62,21 @@
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="55dp"
+        android:layout_gravity="center"
         android:layout_marginHorizontal="32dp"
         android:layout_marginTop="100dp"
-        android:layout_gravity="center"
+        app:cardBackgroundColor="#FFA000"
         app:cardCornerRadius="32dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="#373737">
+            android:layout_height="match_parent">
 
             <Spinner
                 android:id="@+id/spinner_system"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
+                android:layout_marginStart="4dp"
                 android:entries="@array/search_system"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -85,7 +86,9 @@
                 android:id="@+id/edit_query"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
                 android:hint="@string/https"
+                android:imeOptions="actionSearch"
                 android:importantForAutofill="no"
                 android:inputType="textWebEditText"
                 android:textColor="@color/white"
@@ -102,7 +105,7 @@
                 android:layout_height="50dp"
                 android:layout_gravity="end"
                 android:layout_marginEnd="4dp"
-                android:backgroundTint="#373737"
+                android:backgroundTint="#FFA000"
                 android:importantForAccessibility="no"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"

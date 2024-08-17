@@ -7,36 +7,32 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.google.firebase.Firebase
-import com.google.firebase.database.database
-import ru.arturprgr.mybrowser.classes.Preferences
+import ru.arturprgr.mybrowser.data.Preferences
 import ru.arturprgr.mybrowser.R
-import ru.arturprgr.mybrowser.classes.Database
-import ru.arturprgr.mybrowser.ui.activities.WebActivity
+import ru.arturprgr.mybrowser.data.FirebaseHelper
+import ru.arturprgr.mybrowser.ui.activity.WebActivity
 import ru.arturprgr.mybrowser.databinding.LayoutLinkBinding
-import ru.arturprgr.mybrowser.model.Query
+import ru.arturprgr.mybrowser.model.Card
 
-private val adapter: ArrayList<Query> = arrayListOf()
+private val adapter: ArrayList<Card> = arrayListOf()
 
 class HistoryAdapter : RecyclerView.Adapter<HistoryAdapter.ViewHolder>() {
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        fun bind(query: Query) = with(LayoutLinkBinding.bind(itemView)) {
-            textName.text = query.name
-            textLink.text = query.url
+        fun bind(card: Card) = with(LayoutLinkBinding.bind(itemView)) {
+            textName.text = card.name
+            textLink.text = card.path
             click.setOnClickListener {
-                query.context.startActivity(
-                    Intent(
-                        query.context,
-                        WebActivity::class.java
-                    ).putExtra("url", query.url).putExtra("name", query.name)
+                card.context.startActivity(
+                    Intent(card.context, WebActivity::class.java)
+                        .putExtra("url", card.path).putExtra("name", card.name)
                 )
             }
             buttonDelete.setOnClickListener {
-                AlertDialog.Builder(query.context)
+                AlertDialog.Builder(card.context)
                     .setTitle("Удаление вкладки")
                     .setMessage("Вы точно хотите удалить эту вкладку из истории")
                     .setPositiveButton("Да") { _: DialogInterface, _: Int ->
-                        Database("${Preferences(query.context).getAccount()}/history/${query.index}/usage")
+                        FirebaseHelper("${Preferences(card.context).getAccount()}/history/${card.index}/usage")
                             .setValue(false)
                     }
                     .create()
@@ -46,21 +42,16 @@ class HistoryAdapter : RecyclerView.Adapter<HistoryAdapter.ViewHolder>() {
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder =
-        ViewHolder(
-            LayoutInflater.from(parent.context).inflate(
-                R.layout.layout_link, parent, false
-            )
-        )
+        ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.layout_link, parent, false))
 
     override fun getItemCount(): Int = adapter.size
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) =
         holder.bind(adapter[position])
-    }
 
-    fun addQuery(query: Query) {
-        adapter.add(query)
-        notifyItemInserted(query.index)
-        notifyItemRangeChanged(query.index, adapter.size)
+    fun addQuery(card: Card) {
+        adapter.add(card)
+        notifyItemInserted(card.index)
+        notifyItemRangeChanged(card.index, adapter.size)
     }
 }

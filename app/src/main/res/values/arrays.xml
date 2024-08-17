@@ -1,0 +1,45 @@
+<resources>
+    <!-- Reply Preference -->
+    <string-array name="reply_entries">
+        <item>Reply</item>
+        <item>Reply to all</item>
+    </string-array>
+
+    <string-array name="reply_values">
+        <item>reply</item>
+        <item>reply_all</item>
+    </string-array>
+
+    <string-array name="search_system">
+        <item>Google</item>
+        <item>Яндекс</item>
+        <item>DuckDuckGo</item>
+        <item>Bing</item>
+        <item>Yahoo!</item>
+    </string-array>
+
+    <string-array name="search_system_for_spinner">
+        <item>(по умолчанию)</item>
+        <item>Google</item>
+        <item>Яндекс</item>
+        <item>DuckDuckGo</item>
+        <item>Bing</item>
+        <item>Yahoo!</item>
+    </string-array>
+
+    <string-array name="search_system_values">
+        <item>https://www.google.com/search?q=</item>
+        <item>https://ya.ru/search/?text=</item>
+        <item>https://duckduckgo.com/q=</item>
+        <item>https://www.bing.com/search?q=</item>
+        <item>https://search.yahoo.com/search?p=</item>
+    </string-array>
+
+    <string-array name="dirs">
+        <item>Download</item>
+        <item>Documents</item>
+        <item>Music</item>
+        <item>Pictures</item>
+        <item>Movies</item>
+    </string-array>
+</resources>

@@ -1,16 +1,13 @@
-package ru.arturprgr.mybrowser.ui.activities
+package ru.arturprgr.mybrowser.ui.activity
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentContainerView
 import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
 import ru.arturprgr.mybrowser.R
-import ru.arturprgr.mybrowser.classes.Database
-import ru.arturprgr.mybrowser.classes.Preferences
 import ru.arturprgr.mybrowser.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
@@ -31,19 +28,23 @@ class MainActivity : AppCompatActivity() {
         binding.apply {
             selectFragment.setOnItemSelectedListener {
                 when (it.itemId) {
-                    R.id.main_item -> setFragment(binding.fragmentMain)
+                    R.id.main_item -> setFragment(fragmentMain)
 
                     R.id.bookmarks_item -> if (Firebase.auth.currentUser == null)
                         startActivity(Intent(this@MainActivity, AuthActivity::class.java))
-                    else setFragment(binding.fragmentBookmarks)
+                    else setFragment(fragmentBookmarks)
 
                     R.id.history_item -> if (Firebase.auth.currentUser == null)
                         startActivity(Intent(this@MainActivity, AuthActivity::class.java))
-                    else setFragment(binding.fragmentHistory)
+                    else setFragment(fragmentHistory)
 
                     R.id.downloads_item -> if (Firebase.auth.currentUser == null)
                         startActivity(Intent(this@MainActivity, AuthActivity::class.java))
-                    else setFragment(binding.fragmentDownloads)
+                    else setFragment(fragmentDownloads)
+
+                    R.id.collections_item -> if (Firebase.auth.currentUser == null)
+                        startActivity(Intent(this@MainActivity, AuthActivity::class.java))
+                    else setFragment(fragmentCollections)
                 }
                 true
             }
@@ -55,6 +56,7 @@ class MainActivity : AppCompatActivity() {
         fragmentBookmarks.visibility = View.GONE
         fragmentHistory.visibility = View.GONE
         fragmentDownloads.visibility = View.GONE
+        fragmentCollections.visibility = View.GONE
         fragment.visibility = View.VISIBLE
     }
 }

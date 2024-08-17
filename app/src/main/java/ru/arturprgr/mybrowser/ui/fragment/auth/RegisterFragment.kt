@@ -1,4 +1,4 @@
-package ru.arturprgr.mybrowser.ui.fragments
+package ru.arturprgr.mybrowser.ui.fragment.auth
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -9,9 +9,9 @@ import androidx.navigation.fragment.findNavController
 import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
 import ru.arturprgr.mybrowser.R
-import ru.arturprgr.mybrowser.classes.Database
+import ru.arturprgr.mybrowser.data.FirebaseHelper
 import ru.arturprgr.mybrowser.databinding.FragmentRegisterBinding
-import ru.arturprgr.mybrowser.viewToast
+import ru.arturprgr.mybrowser.makeMessage
 
 class RegisterFragment : Fragment() {
     private lateinit var binding: FragmentRegisterBinding
@@ -35,18 +35,18 @@ class RegisterFragment : Fragment() {
                         Firebase.auth.createUserWithEmailAndPassword(email, password)
                             .addOnSuccessListener {
                                 val editedEmail = email.replace(".", "")
-                                Database("$editedEmail/name").setValue(name)
-                                Database("$editedEmail/browser/bookmarks/quantity").setValue(0)
-                                Database("$editedEmail/browser/history/quantity").setValue(0)
-                                Database("$editedEmail/browser/downloads/quantity").setValue(0)
-                                Database("$editedEmail}/goals/goals/quantity").setValue(0)
+                                FirebaseHelper("$editedEmail/name").setValue(name)
+                                FirebaseHelper("$editedEmail/browser/bookmarks/quantity").setValue(0)
+                                FirebaseHelper("$editedEmail/browser/history/quantity").setValue(0)
+                                FirebaseHelper("$editedEmail/browser/downloads/quantity").setValue(0)
+                                FirebaseHelper("$editedEmail/browser/collections/quantity").setValue(0)
                                 findNavController().navigate(R.id.action_registerFragment_to_entranceFragment)
                             }
                             .addOnFailureListener {
-                                viewToast(requireContext(), "Что-то пошло не так!")
+                                makeMessage(requireContext(), "Что-то пошло не так!")
                             }
-                    } else viewToast(requireContext(), "Пароли не совпадают")
-                } else viewToast(requireContext(), "Заполните все поля!")
+                    } else makeMessage(requireContext(), "Пароли не совпадают")
+                } else makeMessage(requireContext(), "Заполните все поля!")
 
             }
 

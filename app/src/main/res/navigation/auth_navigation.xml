@@ -8,7 +8,7 @@
 
     <fragment
         android:id="@+id/entranceFragment"
-        android:name="ru.arturprgr.mybrowser.ui.fragments.EntranceFragment"
+        android:name="ru.arturprgr.mybrowser.ui.fragment.auth.EntranceFragment"
         android:label="fragment_entrance"
         tools:layout="@layout/fragment_entrance" >
         <action
@@ -17,7 +17,7 @@
     </fragment>
     <fragment
         android:id="@+id/registerFragment"
-        android:name="ru.arturprgr.mybrowser.ui.fragments.RegisterFragment"
+        android:name="ru.arturprgr.mybrowser.ui.fragment.auth.RegisterFragment"
         android:label="fragment_register"
         tools:layout="@layout/fragment_register" >
         <action

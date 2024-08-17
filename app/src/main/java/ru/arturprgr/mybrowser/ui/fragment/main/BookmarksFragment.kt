@@ -1,4 +1,4 @@
-package ru.arturprgr.mybrowser.ui.fragments
+package ru.arturprgr.mybrowser.ui.fragment.main
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -6,13 +6,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.firebase.Firebase
-import com.google.firebase.auth.auth
 import ru.arturprgr.mybrowser.adapter.BookmarksAdapter
-import ru.arturprgr.mybrowser.classes.Database
-import ru.arturprgr.mybrowser.classes.Preferences
+import ru.arturprgr.mybrowser.data.FirebaseHelper
+import ru.arturprgr.mybrowser.data.Preferences
 import ru.arturprgr.mybrowser.databinding.FragmentBookmarksBinding
-import ru.arturprgr.mybrowser.model.Bookmark
+import ru.arturprgr.mybrowser.model.Card
 
 class BookmarksFragment : Fragment() {
     private lateinit var binding: FragmentBookmarksBinding
@@ -29,12 +27,10 @@ class BookmarksFragment : Fragment() {
         val quantity = Preferences(requireContext()).getQuantityBookmarks()
 
         if (quantity != 0) for (q in quantity downTo 0)
-            Database("${reference}/$q/usage").getValue { usage ->
-                if (usage.toBoolean()) Database("$reference/$q/name").getValue { name ->
-                    Database("$reference/$q/url").getValue { url ->
-                        adapter.addBookmark(
-                            Bookmark(requireContext(), name, url, q)
-                        )
+            FirebaseHelper("${reference}/$q/usage").getValue { usage ->
+                if (usage.toBoolean()) FirebaseHelper("$reference/$q/name").getValue { name ->
+                    FirebaseHelper("$reference/$q/url").getValue { url ->
+                        adapter.addBookmark(Card(requireContext(), name, url, q))
                     }
                 }
             }
