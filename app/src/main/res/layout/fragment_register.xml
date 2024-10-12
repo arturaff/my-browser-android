@@ -16,9 +16,10 @@
         android:textSize="22sp" />
 
     <LinearLayout
-        android:layout_width="292dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
+        android:layout_marginHorizontal="64dp"
         android:orientation="vertical">
 
         <TextView

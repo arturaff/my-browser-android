@@ -1,32 +1,38 @@
 package ru.arturprgr.mybrowser.ui.fragment.auth
 
+import android.annotation.SuppressLint
 import android.content.Intent
+import android.content.SharedPreferences.Editor
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import androidx.preference.PreferenceManager
 import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
 import ru.arturprgr.mybrowser.R
 import ru.arturprgr.mybrowser.data.FirebaseHelper
-import ru.arturprgr.mybrowser.data.Preferences
+import ru.arturprgr.mybrowser.data.SavesHelper
 import ru.arturprgr.mybrowser.databinding.FragmentEntranceBinding
-import ru.arturprgr.mybrowser.ui.activity.MainActivity
 import ru.arturprgr.mybrowser.makeMessage
+import ru.arturprgr.mybrowser.ui.activity.MainActivity
 
 class EntranceFragment : Fragment() {
     private lateinit var binding: FragmentEntranceBinding
-    private lateinit var preferences: Preferences
+    private lateinit var preferenceManager: Editor
+    private lateinit var savesHelper: SavesHelper
 
+    @SuppressLint("RestrictedApi")
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View {
         binding = FragmentEntranceBinding.inflate(inflater, container, false)
-        preferences = Preferences(requireContext())
+        preferenceManager = PreferenceManager.getDefaultSharedPreferences(requireContext()).edit()
+        savesHelper = SavesHelper(requireContext())
 
         binding.apply {
             buttonEntrance.setOnClickListener {
@@ -39,28 +45,43 @@ class EntranceFragment : Fragment() {
                             val editedMail = email.replace(".", "")
                             FirebaseHelper("$editedMail/name").getValue { name ->
                                 val account = "${editedMail}/browser"
-                                preferences.setEmail(email)
-                                preferences.setName(name)
-                                preferences.setAccount(account)
+                                savesHelper.setEmail(email)
+                                savesHelper.setName(name)
+                                savesHelper.setAccount(account)
+
+                                FirebaseHelper("$account/preferences/auto_location").getValue { autoLocation ->
+                                    preferenceManager.putBoolean("auto_location", autoLocation.toBoolean()).apply()
+                                }
+
+                                FirebaseHelper("$account/preferences/bottom_panel_tools").getValue { bottomPanelTools ->
+                                    preferenceManager.putBoolean("bottom_panel_tools", bottomPanelTools.toBoolean()).apply()
+                                }
+
+                                FirebaseHelper("$account/preferences/def_location").getValue { defLocation ->
+                                    preferenceManager.putString("def_location", defLocation).apply()
+                                }
+
+                                FirebaseHelper("$account/preferences/def_search_system").getValue { defSearchSystem ->
+                                    preferenceManager.putString("def_search_system", defSearchSystem).apply()
+                                }
+
+                                FirebaseHelper("$account/preferences/disabled_weather").getValue { disabledWeather ->
+                                    preferenceManager.putBoolean("disabled_weather", disabledWeather.toBoolean()).apply()
+                                }
+
                                 FirebaseHelper("$account/bookmarks/quantity").getValue { bookmarksQuantity ->
-                                    preferences.setQuantityBookmarks(bookmarksQuantity.toInt())
-                                    FirebaseHelper("$account/history/quantity").getValue { historyQuantity ->
-                                        preferences.setQuantityHistory(historyQuantity.toInt())
-                                        FirebaseHelper("$account/downloads/quantity").getValue { downloadsQuantity ->
-                                            preferences.setQuantityDownloads(downloadsQuantity.toInt())
-                                            FirebaseHelper("$account/collections/quantity").getValue { collectionsQuantity ->
-                                                preferences.setQuantityCollections(collectionsQuantity.toInt())
-                                                startActivity(
-                                                    Intent(
-                                                        requireContext(),
-                                                        MainActivity::class.java
-                                                    )
-                                                )
-                                            }
-                                        }
-                                    }
+                                    savesHelper.setQuantityBookmarks(bookmarksQuantity.toInt())
+                                }
+
+                                FirebaseHelper("$account/history/quantity").getValue { historyQuantity ->
+                                    savesHelper.setQuantityHistory(historyQuantity.toInt())
+                                }
+
+                                FirebaseHelper("$account/downloads/quantity").getValue { downloadsQuantity ->
+                                    savesHelper.setQuantityDownloads(downloadsQuantity.toInt())
                                 }
                             }
+                            startActivity(Intent(requireContext(), MainActivity::class.java))
                         }
 
                         .addOnFailureListener {

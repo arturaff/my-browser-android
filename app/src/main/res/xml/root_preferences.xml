@@ -15,21 +15,4 @@
 
     </PreferenceCategory>
 
-    <PreferenceCategory app:title="@string/weather">
-
-        <SwitchPreference
-            app:key="disabled_weather"
-            app:title="@string/disabled_weather" />
-
-        <SwitchPreference
-            app:key="auto_location"
-            app:title="Не определять местоположение автоматически" />
-
-        <EditTextPreference
-            app:key="def_location"
-            app:title="@string/def_location"
-            app:useSimpleSummaryProvider="true" />
-
-    </PreferenceCategory>
-
 </PreferenceScreen>

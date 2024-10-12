@@ -1,5 +1,6 @@
 package ru.arturprgr.mybrowser.adapter
 
+import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.DialogInterface
 import android.content.Intent
@@ -7,16 +8,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import ru.arturprgr.mybrowser.data.Preferences
 import ru.arturprgr.mybrowser.R
 import ru.arturprgr.mybrowser.data.FirebaseHelper
-import ru.arturprgr.mybrowser.ui.activity.WebActivity
+import ru.arturprgr.mybrowser.data.SavesHelper
+import ru.arturprgr.mybrowser.data.Singleton
 import ru.arturprgr.mybrowser.databinding.LayoutLinkBinding
 import ru.arturprgr.mybrowser.model.Card
-
-private val adapter: ArrayList<Card> = arrayListOf()
+import ru.arturprgr.mybrowser.ui.activity.WebActivity
 
 class HistoryAdapter : RecyclerView.Adapter<HistoryAdapter.ViewHolder>() {
+    private val adapter: ArrayList<Card> = arrayListOf()
+
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bind(card: Card) = with(LayoutLinkBinding.bind(itemView)) {
             textName.text = card.name
@@ -32,7 +34,8 @@ class HistoryAdapter : RecyclerView.Adapter<HistoryAdapter.ViewHolder>() {
                     .setTitle("Удаление вкладки")
                     .setMessage("Вы точно хотите удалить эту вкладку из истории")
                     .setPositiveButton("Да") { _: DialogInterface, _: Int ->
-                        FirebaseHelper("${Preferences(card.context).getAccount()}/history/${card.index}/usage")
+                        Singleton.historyAdapter.removeQuery(card)
+                        FirebaseHelper("${SavesHelper(card.context).getAccount()}/history/${card.index}/usage")
                             .setValue(false)
                     }
                     .create()
@@ -49,9 +52,25 @@ class HistoryAdapter : RecyclerView.Adapter<HistoryAdapter.ViewHolder>() {
     override fun onBindViewHolder(holder: ViewHolder, position: Int) =
         holder.bind(adapter[position])
 
+    fun getList(): ArrayList<Card> = adapter
+
     fun addQuery(card: Card) {
         adapter.add(card)
         notifyItemInserted(card.index)
         notifyItemRangeChanged(card.index, adapter.size)
     }
+
+    @SuppressLint("NotifyDataSetChanged")
+    fun removeQuery(card: Card) {
+        adapter.remove(card)
+        notifyDataSetChanged()
+    }
+
+    fun removeQuery(index: Int) {
+        adapter.removeAt(index)
+        notifyItemRemoved(index)
+        notifyItemRangeChanged(index, adapter.size)
+    }
+
+    fun getSize(): Int = adapter.size
 }

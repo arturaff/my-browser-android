@@ -11,18 +11,19 @@ import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.EditText
 import android.widget.FrameLayout
-import android.widget.FrameLayout.LayoutParams
-import android.widget.LinearLayout
 import android.widget.Spinner
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.updateLayoutParams
 import ru.arturprgr.mybrowser.R
 import ru.arturprgr.mybrowser.data.FirebaseHelper
-import ru.arturprgr.mybrowser.data.Preferences
+import ru.arturprgr.mybrowser.data.SavesHelper
+import ru.arturprgr.mybrowser.data.Singleton
 import ru.arturprgr.mybrowser.databinding.ActivityWebBinding
 import ru.arturprgr.mybrowser.getDefaultBoolean
 import ru.arturprgr.mybrowser.makeMessage
+import ru.arturprgr.mybrowser.model.Card
+import ru.arturprgr.mybrowser.ui.fragment.main.BookmarksFragment
 import ru.arturprgr.mybrowser.webClient.CustomWebChromeClient
 import ru.arturprgr.mybrowser.webClient.CustomWebViewClient
 
@@ -30,10 +31,8 @@ class WebActivity : AppCompatActivity() {
     private lateinit var binding: ActivityWebBinding
     private lateinit var webViewClient: CustomWebViewClient
     private lateinit var webChromeClient: CustomWebChromeClient
-    private lateinit var preferences: Preferences
+    private lateinit var savesHelper: SavesHelper
     private lateinit var dirsAdapter: ArrayAdapter<CharSequence>
-    private lateinit var collectionsAdapter: ArrayAdapter<String>
-    private lateinit var collectionsArrayList: ArrayList<String>
 
     @RequiresApi(Build.VERSION_CODES.M)
     @SuppressLint("SetJavaScriptEnabled")
@@ -42,43 +41,22 @@ class WebActivity : AppCompatActivity() {
         binding = ActivityWebBinding.inflate(layoutInflater)
         webViewClient = CustomWebViewClient(this@WebActivity, binding)
         webChromeClient = CustomWebChromeClient(binding)
-        preferences = Preferences(this@WebActivity)
-        collectionsArrayList = arrayListOf()
+        savesHelper = SavesHelper(this@WebActivity)
         dirsAdapter = ArrayAdapter.createFromResource(
             this@WebActivity, R.array.dirs, android.R.layout.simple_spinner_item
         )
         dirsAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        for (index in 0..preferences.getQuantityCollections()) if (preferences.getQuantityCollections() == 0) collectionsAdapter =
-            ArrayAdapter<String>(
-                this@WebActivity,
-                android.R.layout.simple_spinner_dropdown_item,
-                arrayListOf("*Нет коллекций*")
-            )
-        else FirebaseHelper("${preferences.getAccount()}/collections/$index/usage").getValue { usage ->
-            if (usage.toBoolean()) FirebaseHelper("${preferences.getAccount()}/collections/$index/name").getValue { name ->
-                collectionsArrayList.add(name)
-                collectionsAdapter = ArrayAdapter<String>(
-                    this@WebActivity,
-                    android.R.layout.simple_spinner_dropdown_item,
-                    collectionsArrayList
-                )
-            }
-        }
 
         setContentView(binding.root)
 
         binding.apply {
             if (getDefaultBoolean(this@WebActivity, "bottom_panel_tools")) {
                 buttonMainBottom.setOnClickListener {
-                    goMain()
+                    goMainActivity()
                 }
 
                 buttonReloadBottom.setOnClickListener {
                     reload()
-                }
-
-                buttonAddInCollectionBottom.setOnClickListener {
-                    addOnCollection()
                 }
 
                 buttonAddBookmarkBottom.setOnClickListener {
@@ -86,7 +64,7 @@ class WebActivity : AppCompatActivity() {
                 }
 
                 layoutToolTop.visibility = View.GONE
-                layoutWebView.updateLayoutParams<LayoutParams> {
+                layoutWebView.updateLayoutParams<FrameLayout.LayoutParams> {
                     this.topMargin = 0
                     this.rightMargin = 0
                     this.leftMargin = 0
@@ -94,15 +72,11 @@ class WebActivity : AppCompatActivity() {
                 }
             } else {
                 buttonMainTop.setOnClickListener {
-                    goMain()
+                    goMainActivity()
                 }
 
                 buttonReloadTop.setOnClickListener {
                     reload()
-                }
-
-                buttonAddInCollectionTop.setOnClickListener {
-                    addOnCollection()
                 }
 
                 buttonAddBookmarkTop.setOnClickListener {
@@ -110,16 +84,17 @@ class WebActivity : AppCompatActivity() {
                 }
 
                 layoutToolBottom.visibility = View.GONE
-                layoutWebView.updateLayoutParams<LayoutParams> {
-                    this.topMargin = 135
+                layoutWebView.updateLayoutParams<FrameLayout.LayoutParams> {
+                    this.topMargin = 140
                     this.rightMargin = 0
                     this.leftMargin = 0
                     this.bottomMargin = 0
                 }
             }
-            Log.d("Attempt", layoutWebView.top.toString())
             webView.settings.javaScriptEnabled = true
             webView.settings.defaultTextEncodingName = "utf-8"
+            webView.settings.userAgentString =
+                "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36"
             webView.setWebViewClient(webViewClient)
             webView.setWebChromeClient(webChromeClient)
             webView.loadUrl(intent!!.getStringExtra("url").toString())
@@ -133,31 +108,31 @@ class WebActivity : AppCompatActivity() {
                     .setView(spinnerDir)
                     .setPositiveButton("Скачать") { _, _ ->
                         val name = url.split("/")
-                        val reference = "${preferences.getAccount()}/downloads"
+                        val reference = "${savesHelper.getAccount()}/downloads"
                         webViewClient
                             .downloadFile(
                                 name[name.size - 1],
                                 url.toString(),
                                 spinnerDir.selectedItem.toString()
                             )
-                        preferences.setQuantityDownloads(preferences.getQuantityDownloads() + 1)
+                        savesHelper.setQuantityDownloads(savesHelper.getQuantityDownloads() + 1)
                         FirebaseHelper("$reference/quantity")
-                            .setValue(preferences.getQuantityDownloads())
+                            .setValue(savesHelper.getQuantityDownloads())
                         FirebaseHelper(
                             "$reference/${
-                                preferences
+                                savesHelper
                                     .getQuantityDownloads()
                             }/name"
                         ).setValue(name[name.size - 1])
                         FirebaseHelper(
                             "$reference/${
-                                preferences
+                                savesHelper
                                     .getQuantityDownloads()
                             }/path"
                         ).setValue("Скачано в папку ${spinnerDir.selectedItem}")
                         FirebaseHelper(
                             "$reference/${
-                                preferences
+                                savesHelper
                                     .getQuantityDownloads()
                             }/usage"
                         ).setValue(true)
@@ -175,7 +150,8 @@ class WebActivity : AppCompatActivity() {
             }
 
             buttonGoMain.setOnClickListener {
-                goMain()
+                if (webView.canGoBack()) webView.goBack()
+                else goMainActivity()
             }
         }
     }
@@ -198,54 +174,15 @@ class WebActivity : AppCompatActivity() {
         }
     }
 
-    private fun goMain() {
-        startActivity(Intent(this@WebActivity, MainActivity::class.java))
+    private fun goMainActivity() {
+        @Suppress("DEPRECATION")
+        super.onBackPressed()
     }
 
     private fun reload() = with(binding) {
         webView.reload()
         layoutWebView.visibility = View.VISIBLE
         layoutError.visibility = View.GONE
-    }
-
-    private fun addOnCollection() = with(binding) {
-        val linearLayout = LinearLayout(this@WebActivity)
-        val spinnerCollections = Spinner(this@WebActivity)
-        val editName = EditText(this@WebActivity)
-        spinnerCollections.adapter = collectionsAdapter
-        editName.hint = "Название элемента"
-        editName.setText("${webView.title}")
-        linearLayout.orientation = LinearLayout.VERTICAL
-        linearLayout.addView(spinnerCollections)
-        linearLayout.addView(editName)
-
-        AlertDialog.Builder(this@WebActivity)
-            .setTitle("Добавление элемента в коллекцию")
-            .setMessage("Выберите коллекцию и по желанию измените название элемента")
-            .setView(linearLayout)
-            .setPositiveButton("Добавить") { _, _ ->
-                val reference =
-                    "${preferences.getAccount()}/collections/${spinnerCollections.selectedItemPosition + 1}"
-                val quantity = 1
-                preferences.setPreference("quantity$spinnerCollections", quantity)
-                FirebaseHelper("$reference/quantity")
-                    .setValue(quantity)
-                FirebaseHelper("$reference/$quantity/title")
-                    .setValue(editName)
-                FirebaseHelper("$reference/$quantity/url")
-                    .setValue("${webView.url}")
-                FirebaseHelper("$reference/$quantity/usage")
-                    .setValue(true)
-            }
-            .create()
-            .show()
-
-        linearLayout.updateLayoutParams<FrameLayout.LayoutParams> {
-            this.topMargin = 16
-            this.leftMargin = 48
-            this.rightMargin = 48
-            this.bottomMargin = 16
-        }
     }
 
     private fun addBookmark() = with(binding) {
@@ -255,18 +192,25 @@ class WebActivity : AppCompatActivity() {
 
         AlertDialog.Builder(this@WebActivity).setTitle("Добавить закладку")
             .setMessage("Введите имя закладки и URL, затем нажмите добавить")
-            .setView(editName).setPositiveButton("Добавить") { _: DialogInterface, _: Int ->
-                preferences.setQuantityBookmarks(preferences.getQuantityBookmarks() + 1)
-                val name = editName.text.toString()
-                val url = webView.url.toString()
+            .setView(editName)
+            .setPositiveButton("Добавить") { _: DialogInterface, _: Int ->
+                savesHelper.setQuantityBookmarks(savesHelper.getQuantityBookmarks() + 1)
                 val reference =
-                    "${preferences.getAccount()}/bookmarks/${preferences.getQuantityBookmarks()}"
-                FirebaseHelper("${preferences.getAccount()}/bookmarks/quantity").setValue(
-                    preferences.getQuantityBookmarks()
+                    "${savesHelper.getAccount()}/bookmarks/${savesHelper.getQuantityBookmarks()}"
+                FirebaseHelper("${savesHelper.getAccount()}/bookmarks/quantity").setValue(
+                    savesHelper.getQuantityBookmarks()
                 )
                 FirebaseHelper("$reference/usage").setValue(true)
-                FirebaseHelper("$reference/name").setValue(name)
-                FirebaseHelper("$reference/url").setValue(url)
+                FirebaseHelper("$reference/name").setValue("${editName.text}")
+                FirebaseHelper("$reference/url").setValue("${webView.url}")
+                Singleton.bookmarksAdapter.addBookmark(
+                    Card(
+                        BookmarksFragment.context,
+                        "${editName.text}",
+                        "${webView.url}",
+                        Singleton.bookmarksAdapter.getSize() + 1
+                    )
+                )
             }
             .create()
             .show()

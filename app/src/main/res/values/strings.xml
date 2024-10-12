@@ -16,7 +16,6 @@
     <string name="no_account">Нет аккаунта</string>
     <string name="yes_account">Есть аккаунт</string>
     <string name="second_password">Пароль (повторно)</string>
-    <string name="main">Главная</string>
     <string name="bookmarks">Закладки</string>
     <string name="history">История</string>
     <string name="settings">Настройки</string>
@@ -47,25 +46,9 @@
     <string name="error">Что-то пошло не так! Страница не загрузилась.</string>
     <string name="err_code_1">Не получается загрузить веб страницу, попробуйте перезагрузить ее.</string>
     <string name="reload_page">Перезагрузить страницу</string>
-    <string name="go_main">Выйти на главную</string>
+    <string name="go_main">Выйти на предыдущую страницу</string>
     <string name="title_activity_settings">SettingsActivity</string>
-
-    <!-- Preference Titles -->
-    <string name="messages_header">Messages</string>
-    <string name="sync_header">Sync</string>
-
-    <!-- Messages Preferences -->
-    <string name="signature_title">Your signature</string>
-    <string name="reply_title">Default reply action</string>
-
-    <!-- Sync Preferences -->
-    <string name="sync_title">Sync email periodically</string>
-    <string name="attachment_title">Download incoming attachments</string>
-    <string name="attachment_summary_on">Automatically download attachments for incoming emails
-    </string>
-    <string name="attachment_summary_off">Only download attachments when manually requested</string>
     <string name="search">Поиск</string>
     <string name="def_search_system">Поисковая система по умолчанию</string>
     <string name="def_location">Локация по умолчанию</string>
-    <string name="disabled_weather">Не отображать погоду на главном экране</string>
 </resources>

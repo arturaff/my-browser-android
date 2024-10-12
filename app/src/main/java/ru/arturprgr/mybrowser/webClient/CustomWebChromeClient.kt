@@ -4,7 +4,6 @@ import android.view.View
 import android.webkit.WebChromeClient
 import android.webkit.WebView
 import ru.arturprgr.mybrowser.databinding.ActivityWebBinding
-import ru.arturprgr.mybrowser.ui.activity.WebActivity
 
 class CustomWebChromeClient(val binding: ActivityWebBinding) :
     WebChromeClient() {

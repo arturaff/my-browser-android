@@ -7,44 +7,11 @@
     android:orientation="vertical"
     tools:context=".ui.activity.MainActivity">
 
-    <androidx.fragment.app.FragmentContainerView
-        android:id="@+id/fragment_main"
-        android:name="ru.arturprgr.mybrowser.ui.fragment.main.MainFragment"
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/view_pager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginBottom="55dp" />
-
-    <androidx.fragment.app.FragmentContainerView
-        android:id="@+id/fragment_bookmarks"
-        android:name="ru.arturprgr.mybrowser.ui.fragment.main.BookmarksFragment"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginBottom="55dp"
-        android:visibility="gone" />
-
-    <androidx.fragment.app.FragmentContainerView
-        android:id="@+id/fragment_history"
-        android:name="ru.arturprgr.mybrowser.ui.fragment.main.HistoryFragment"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginBottom="55dp"
-        android:visibility="gone" />
-
-    <androidx.fragment.app.FragmentContainerView
-        android:id="@+id/fragment_downloads"
-        android:name="ru.arturprgr.mybrowser.ui.fragment.main.DownloadsFragment"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginBottom="55dp"
-        android:visibility="gone" />
-
-    <androidx.fragment.app.FragmentContainerView
-        android:id="@+id/fragment_collections"
-        android:name="ru.arturprgr.mybrowser.ui.fragment.main.CollectionsFragment"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginBottom="55dp"
-        android:visibility="gone" />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/select_fragment"

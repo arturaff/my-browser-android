@@ -1,5 +1,7 @@
 package ru.arturprgr.mybrowser.ui.fragment.main
 
+import android.annotation.SuppressLint
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -7,14 +9,16 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import ru.arturprgr.mybrowser.adapter.DownloadsAdapter
+import ru.arturprgr.mybrowser.adapter.HistoryAdapter
 import ru.arturprgr.mybrowser.data.FirebaseHelper
-import ru.arturprgr.mybrowser.data.Preferences
+import ru.arturprgr.mybrowser.data.SavesHelper
+import ru.arturprgr.mybrowser.data.Singleton
 import ru.arturprgr.mybrowser.databinding.FragmentDownloadsBinding
 import ru.arturprgr.mybrowser.model.Card
 
 class DownloadsFragment : Fragment() {
     private lateinit var binding: FragmentDownloadsBinding
-    private val adapter = DownloadsAdapter()
+    private lateinit var savesHelper: SavesHelper
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -22,29 +26,29 @@ class DownloadsFragment : Fragment() {
         savedInstanceState: Bundle?,
     ): View {
         binding = FragmentDownloadsBinding.inflate(inflater, container, false)
-
-        val preferences = Preferences(requireContext())
-        val reference = "${preferences.getAccount()}/downloads"
-        val quantity = preferences.getQuantityDownloads()
-
-        if (quantity != 0) for (q in quantity downTo 0)
-            FirebaseHelper("$reference/$q/usage").getValue { usage ->
-                if (usage.toBoolean()) FirebaseHelper("$reference/$q/name").getValue { name ->
-                    FirebaseHelper("$reference/$q/path").getValue { path ->
-                        adapter.addDownload(Card(requireContext(), name, path, q))
-                    }
-                }
-            }
+        savesHelper = SavesHelper(requireContext())
+        DownloadsFragment.context = requireContext()
 
         binding.apply {
             listDownloads.layoutManager = LinearLayoutManager(requireContext())
-            listDownloads.adapter = adapter
+            listDownloads.adapter = Singleton.downloadsAdapter
             buttonClearDownloads.setOnClickListener {
-                for (i in 1..quantity) FirebaseHelper("${preferences.getAccount()}/downloads/$i/usage")
+                FirebaseHelper("${savesHelper.getAccount()}/downloads")
                     .setValue(false)
+                FirebaseHelper("${savesHelper.getAccount()}/downloads/quantity")
+                    .setValue(0)
+                savesHelper.setQuantityDownloads(0)
+                Singleton.downloadsAdapter = DownloadsAdapter()
+                listDownloads.adapter = null
+                listDownloads.adapter = Singleton.downloadsAdapter
             }
         }
 
         return binding.root
+    }
+
+    companion object {
+        @SuppressLint("StaticFieldLeak")
+        lateinit var context: Context
     }
 }

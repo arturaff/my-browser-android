@@ -15,26 +15,29 @@ import android.webkit.WebViewClient
 import android.widget.Button
 import ru.arturprgr.mybrowser.R
 import ru.arturprgr.mybrowser.data.FirebaseHelper
-import ru.arturprgr.mybrowser.data.Preferences
+import ru.arturprgr.mybrowser.data.SavesHelper
+import ru.arturprgr.mybrowser.data.Singleton
 import ru.arturprgr.mybrowser.databinding.ActivityWebBinding
+import ru.arturprgr.mybrowser.model.Card
+import ru.arturprgr.mybrowser.ui.fragment.main.DownloadsFragment
+import ru.arturprgr.mybrowser.ui.fragment.main.HistoryFragment
 
 
 class CustomWebViewClient(val context: Context, val binding: ActivityWebBinding) : WebViewClient() {
-    val preferences = Preferences(context)
+    private val savesHelper = SavesHelper(context)
 
     override fun onPageCommitVisible(view: WebView?, url: String?) {
         super.onPageCommitVisible(view, url)
-        Log.d("Attempt", url!!)
         view!!.visibility = View.VISIBLE
         Log.d("Attempt", "canGoBack - ${view.canGoBack()}, canGoForward - ${view.canGoForward()}")
         if ((!view.canGoBack() || !view.canGoForward()) && (view.canGoBack() || !view.canGoForward())) {
-            val reference = "${preferences.getAccount()}/history"
-            val title = view.title.toString()
-            preferences.setQuantityHistory(preferences.getQuantityHistory() + 1)
-            FirebaseHelper("$reference/quantity").setValue(preferences.getQuantityHistory())
-            FirebaseHelper("$reference/${preferences.getQuantityHistory()}/name").setValue(title)
-            FirebaseHelper("$reference/${preferences.getQuantityHistory()}/url").setValue(url)
-            FirebaseHelper("$reference/${preferences.getQuantityHistory()}/usage").setValue(true)
+            val reference = "${savesHelper.getAccount()}/history"
+            savesHelper.setQuantityHistory(savesHelper.getQuantityHistory() + 1)
+            FirebaseHelper("$reference/quantity").setValue(savesHelper.getQuantityHistory())
+            FirebaseHelper("$reference/${savesHelper.getQuantityHistory()}/name").setValue(view.title)
+            FirebaseHelper("$reference/${savesHelper.getQuantityHistory()}/url").setValue(url)
+            FirebaseHelper("$reference/${savesHelper.getQuantityHistory()}/usage").setValue(true)
+            Singleton.historyAdapter.addQuery(Card(HistoryFragment.context, "${view.title}", "$url", Singleton.historyAdapter.getSize() + 1))
         }
     }
 
@@ -93,17 +96,6 @@ class CustomWebViewClient(val context: Context, val binding: ActivityWebBinding)
                 }
             }
 
-            ERROR_TIMEOUT -> viewErrorPage(
-                R.drawable.ic_timeout, "Время подключения истекло", "Загрузка страницы окончено"
-            ) { button ->
-                button.text = "Попробовать ещё"
-                button.setOnClickListener {
-                    view!!.reload()
-                    binding.layoutWebView.visibility = View.VISIBLE
-                    binding.layoutError.visibility = View.GONE
-                }
-            }
-
             ERROR_FILE_NOT_FOUND -> viewErrorPage(
                 R.drawable.ic_error,
                 "Файл не найден",
@@ -117,23 +109,10 @@ class CustomWebViewClient(val context: Context, val binding: ActivityWebBinding)
                 }
             }
 
-            ERROR_FAILED_SSL_HANDSHAKE -> viewErrorPage(
-                R.drawable.ic_safety,
-                "Не удалось выполнить SSL-квитирование.",
-                "Вы не как не сможете исправить эту ошибку. Ждите, когда разработчики сайта его продлят"
-            ) { button ->
-                button.text = "Попробовать ещё"
-                button.setOnClickListener {
-                    view!!.reload()
-                    binding.layoutWebView.visibility = View.VISIBLE
-                    binding.layoutError.visibility = View.GONE
-                }
-            }
-
             ERROR_TOO_MANY_REQUESTS -> viewErrorPage(
                 R.drawable.ic_error,
                 "Слишком много запросов во время этой загрузки",
-                "Сайт перегружен! Подождите немного, пока запросов станет поменьше."
+                "Сайт перегружен запросами. Подождите пока они спадут"
             ) { button ->
                 button.text = "Попробовать ещё"
                 button.setOnClickListener {
@@ -146,20 +125,7 @@ class CustomWebViewClient(val context: Context, val binding: ActivityWebBinding)
             ERROR_REDIRECT_LOOP -> viewErrorPage(
                 R.drawable.ic_error,
                 "Слишком много перенаправлений",
-                "Выйдите на главную и напишите его верно"
-            ) { button ->
-                button.text = "Попробовать ещё"
-                button.setOnClickListener {
-                    view!!.reload()
-                    binding.layoutWebView.visibility = View.VISIBLE
-                    binding.layoutError.visibility = View.GONE
-                }
-            }
-
-            ERROR_UNSUPPORTED_SCHEME -> viewErrorPage(
-                R.drawable.ic_error,
-                "Неподдерживаемой схема URL",
-                "Выйдите на главную и напишите его верно"
+                "Сайты перенаправляют вас с одного на другой"
             ) { button ->
                 button.text = "Попробовать ещё"
                 button.setOnClickListener {
@@ -171,45 +137,6 @@ class CustomWebViewClient(val context: Context, val binding: ActivityWebBinding)
 
             ERROR_BAD_URL -> viewErrorPage(
                 R.drawable.ic_error, "Неверный URL-адрес", "Выйдите на главную и напишите его верно"
-            ) { button ->
-                button.text = "Попробовать ещё"
-                button.setOnClickListener {
-                    view!!.reload()
-                    binding.layoutWebView.visibility = View.VISIBLE
-                    binding.layoutError.visibility = View.GONE
-                }
-            }
-
-            ERROR_UNSUPPORTED_AUTH_SCHEME -> viewErrorPage(
-                R.drawable.ic_error,
-                "Неподдерживаемая схемы аутентификации",
-                "Неподдерживаемая схема аутентификации (не базовая и не дайджест)"
-            ) { button ->
-                button.text = "Попробовать ещё"
-                button.setOnClickListener {
-                    view!!.reload()
-                    binding.layoutWebView.visibility = View.VISIBLE
-                    binding.layoutError.visibility = View.GONE
-                }
-            }
-
-            ERROR_AUTHENTICATION -> viewErrorPage(
-                R.drawable.ic_error,
-                "Ошибка аутентификации",
-                "Ошибка аутентификации пользователя на сервере"
-            ) { button ->
-                button.text = "Попробовать ещё"
-                button.setOnClickListener {
-                    view!!.reload()
-                    binding.layoutWebView.visibility = View.VISIBLE
-                    binding.layoutError.visibility = View.GONE
-                }
-            }
-
-            ERROR_PROXY_AUTHENTICATION -> viewErrorPage(
-                R.drawable.ic_error,
-                "Ошибка прокси-аутентификации",
-                "Ошибка аутентификации пользователя на прокси-сервере"
             ) { button ->
                 button.text = "Попробовать ещё"
                 button.setOnClickListener {
@@ -268,5 +195,6 @@ class CustomWebViewClient(val context: Context, val binding: ActivityWebBinding)
                 Environment.DIRECTORY_MOVIES, name
             )
         }
+        Singleton.downloadsAdapter.addDownload(Card(DownloadsFragment.context, name, path, Singleton.downloadsAdapter.getSize() + 1))
     }
 }

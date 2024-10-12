@@ -8,7 +8,8 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import ru.arturprgr.mybrowser.R
 import ru.arturprgr.mybrowser.data.FirebaseHelper
-import ru.arturprgr.mybrowser.data.Preferences
+import ru.arturprgr.mybrowser.data.SavesHelper
+import ru.arturprgr.mybrowser.data.Singleton
 import ru.arturprgr.mybrowser.databinding.LayoutLinkBinding
 import ru.arturprgr.mybrowser.model.Card
 
@@ -24,7 +25,8 @@ class DownloadsAdapter : RecyclerView.Adapter<DownloadsAdapter.ViewHolder>() {
                     .setTitle("Удаление файла")
                     .setMessage("Вы точно хотите удалить этот файл из истории (не с устройства)")
                     .setPositiveButton("Да") { _: DialogInterface, _: Int ->
-                        FirebaseHelper("${Preferences(card.context).getAccount()}/downloads/${card.index}/usage")
+                        Singleton.downloadsAdapter.removeDownload(card)
+                        FirebaseHelper("${SavesHelper(card.context).getAccount()}/downloads/${card.index}/usage")
                             .setValue(false)
                     }
                     .create()
@@ -43,7 +45,21 @@ class DownloadsAdapter : RecyclerView.Adapter<DownloadsAdapter.ViewHolder>() {
 
     fun addDownload(card: Card) {
         adapter.add(card)
-        notifyItemChanged(card.index)
+        notifyItemInserted(card.index)
         notifyItemRangeChanged(card.index, adapter.size)
     }
+
+    fun removeDownload(card: Card) {
+        adapter.remove(card)
+        notifyItemRemoved(card.index)
+        notifyItemRangeChanged(card.index, adapter.size)
+    }
+
+    fun removeDownload(index: Int) {
+        adapter.removeAt(index)
+        notifyItemRemoved(index)
+        notifyItemRangeChanged(index, adapter.size)
+    }
+
+    fun getSize(): Int = adapter.size
 }

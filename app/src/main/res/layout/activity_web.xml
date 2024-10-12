@@ -10,7 +10,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/layout_tool_top"
         android:layout_width="match_parent"
-        android:layout_height="50dp">
+        android:layout_height="55dp">
 
         <ImageButton
             android:id="@+id/button_main_top"
@@ -33,22 +33,10 @@
             android:maxLines="1"
             android:textSize="12sp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/button_add_in_collection_top"
+            app:layout_constraintEnd_toStartOf="@+id/button_add_bookmark_top"
             app:layout_constraintStart_toEndOf="@+id/button_main_top"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="0000000000000000000000000000000" />
-
-        <ImageButton
-            android:id="@+id/button_add_in_collection_top"
-            android:layout_width="42dp"
-            android:layout_height="42dp"
-            android:layout_marginEnd="4dp"
-            android:backgroundTint="@android:color/transparent"
-            android:importantForAccessibility="no"
-            android:src="@drawable/ic_add_in_collection"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/button_add_bookmark_top"
-            app:layout_constraintTop_toTopOf="parent" />
 
         <ImageButton
             android:id="@+id/button_add_bookmark_top"
@@ -80,7 +68,7 @@
         android:id="@+id/layout_tool_bottom"
         android:layout_width="match_parent"
         android:layout_gravity="bottom"
-        android:layout_height="50dp">
+        android:layout_height="55dp">
 
         <ImageButton
             android:id="@+id/button_main_bottom"
@@ -103,22 +91,10 @@
             android:maxLines="1"
             android:textSize="12sp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/button_add_in_collection_bottom"
+            app:layout_constraintEnd_toStartOf="@+id/button_add_bookmark_bottom"
             app:layout_constraintStart_toEndOf="@+id/button_main_bottom"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="0000000000000000000000000000000" />
-
-        <ImageButton
-            android:id="@+id/button_add_in_collection_bottom"
-            android:layout_width="42dp"
-            android:layout_height="42dp"
-            android:layout_marginEnd="4dp"
-            android:backgroundTint="@android:color/transparent"
-            android:importantForAccessibility="no"
-            android:src="@drawable/ic_add_in_collection"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/button_add_bookmark_bottom"
-            app:layout_constraintTop_toTopOf="parent" />
 
         <ImageButton
             android:id="@+id/button_add_bookmark_bottom"
@@ -187,7 +163,8 @@
         android:layout_marginTop="100dp"
         android:layout_marginHorizontal="50dp"
         android:orientation="vertical"
-        android:visibility="gone">
+        android:visibility="gone"
+        >
 
         <LinearLayout
             android:layout_width="wrap_content"
